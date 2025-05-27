@@ -1,0 +1,57 @@
+📁 tradutor_local.py – Tradução Bidirecional PT ⇄ EN
+📌 Função no Projeto
+Este módulo permite que o sistema interaja com o utilizador em português, mesmo que o modelo Velvet só compreenda bem inglês. Ele assegura a tradução antes e depois da geração da resposta, funcionando de forma transparente para o utilizador.
+
+🔄 Pipeline de Tradução
+1. Tradução PT → EN
+Usada para traduzir a pergunta original antes de gerar a resposta:
+
+
+def traduzir_pt_para_en(texto: str) -> str
+2. Tradução EN → PT
+Usada para traduzir a resposta gerada pelo Velvet para português:
+
+
+def traduzir_en_para_pt(texto: str) -> str
+3. Função Genérica
+Seleciona automaticamente a direção da tradução:
+
+python
+Copiar
+Editar
+def traduzir(texto: str, origem: str = "pt", destino: str = "en") -> str
+🧠 Integração no Pipeline Velvet
+Este módulo é chamado em dois pontos fundamentais:
+
+No chatbot_controller.py:
+
+Traduz a pergunta do utilizador para inglês antes de criar o prompt
+
+No velvet_runner.py:
+
+Traduz a resposta gerada de volta para português
+
+Sem esta camada de tradução, o Velvet-2B não conseguiria compreender ou responder adequadamente em português.
+
+✅ Funções-Chave
+Função	Propósito
+traduzir_pt_para_en	Entrada do pipeline: adapta pergunta para o Velvet
+traduzir_en_para_pt	Saída do pipeline: adapta resposta para o utilizador
+traduzir	Interface genérica e reutilizável para tradução
+
+📌 Justificação Tecnológica
+Tecnologia	Motivo da Escolha
+MarianMT (HuggingFace)	Modelos leves, offline e de código aberto
+geralt/Opus-mt-pt-en	Alta fidelidade na tradução técnica (PT ➜ EN)
+Helsinki-NLP/opus-mt-en-pt	Robusto e claro na tradução inversa (EN ➜ PT)
+Execução local	Garantia de privacidade e independência de API
+
+🚀 Benefícios para o Projeto
+Compatibilidade total com Velvet-2B
+
+Clareza e coerência linguística para os estudantes
+
+Execução local ➜ Ideal para ambientes offline e educativos
+
+Modularidade ➜ Pode ser substituído futuramente por outro tradutor
+

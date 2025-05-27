@@ -1,0 +1,76 @@
+
+📁 chatbot_controller.py – Coordenador Central do Chatbot
+📌 Função no Projeto
+Este módulo é o coração da aplicação, responsável por orquestrar todo o ciclo de interação com o utilizador. É o ponto de entrada do sistema chamado diretamente pela interface CLI (cli_interface.py) e também por outras interfaces (Tkinter ou Discord, se usadas).
+
+🔄 Pipeline Implementado (Passo a Passo)
+1. Entrada do Utilizador
+Recebe a pergunta do utilizador via função:
+
+
+def process_user_input(question: str) -> str:
+2. Recuperação de Contexto (RAG)
+Chama a função retrieve_context() de rag_engine.py:
+
+
+context_pt, scores, context_en, context_norm, debug_ctx = retrieve_context(...)
+Isto ativa a pesquisa semântica na base ChromaDB, com embeddings, e reranking com CrossEncoder.
+
+3. Tradução (PT ➜ EN)
+Traduz a pergunta para inglês (compatível com o modelo Velvet):
+
+
+question_en = traduzir(question, origem='pt', destino='en')
+4. Geração com Velvet-2B
+Cria um prompt em inglês com o contexto + pergunta:
+
+
+prompt_en = f"Context:\n{debug_ctx['context_en']}\n\nQuestion: {question_en}\nAnswer:"
+Passa o prompt para o Velvet via generate_response() em velvet_runner.py.
+
+5. Tradução da Resposta (EN ➜ PT)
+Tradução automática da resposta gerada com MarianMT.
+
+6. Validação da Resposta
+Compara palavras-chave entre contexto e resposta com validar_resposta_por_keywords():
+
+
+comuns = set(palavras_contexto).intersection(set(palavras_resposta))
+7. Métricas e Registo
+Salva:
+
+Métricas (.jsonl)
+
+Histórico de respostas (.json)
+
+Última resposta (.json)
+
+Logs técnicos (.txt)
+
+🧠 Integração com Velvet-2B
+O chatbot_controller.py não contém o modelo diretamente, mas prepara o prompt, envia e processa o output do Velvet.
+
+Usa as traduções para contornar as limitações linguísticas do Velvet-2B (treinado em inglês/italiano).
+
+Calcula métricas para ajudar a avaliar a qualidade da resposta.
+
+🚀 Papel Crítico no Projeto
+Assincronia via CLI: apesar deste ficheiro em si não ser assíncrono, é usado num ambiente assíncrono (CLI com asyncio) para permitir respostas rápidas e interativas, sem bloqueios de interface.
+
+Modularidade: delega responsabilidades para outros módulos (tradução, geração, RAG), seguindo o padrão MVC.
+
+✅ Funções-Chave
+Função	Propósito
+process_user_input	Pipeline completo de pergunta → resposta
+validar_resposta_por_keywords	Avaliação da resposta
+contar_tokens	Auxiliar para métricas
+log_evento, salvar_metricas, salvar_completo_em_arquivo	Registos para análise posterior
+
+📌 Justificação Tecnológica
+RAG + Velvet: permite resposta personalizada com base em documentos reais (ChromaDB).
+
+CrossEncoder (reranking): mais eficaz que a ordenação por similaridade bruta, pois analisa contexto e pergunta em conjunto, ideal para ambientes educacionais.
+
+MarianMT: garante compatibilidade linguística, sem depender da internet (local).
+
+Logs e métricas: essenciais para avaliar o impacto pedagógico, reprodutibilidade e melhoria futura.

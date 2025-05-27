@@ -1,0 +1,60 @@
+📁 metrics_controller.py – Avaliação de Respostas com Métricas e Gráficos
+📌 Função no Projeto
+Este script lê o histórico de respostas geradas pelo Velvet-2B (ficheiro velvet_respostas.json) e calcula estatísticas chave, que são depois usadas para:
+
+Avaliar a qualidade geral do sistema
+
+Identificar padrões de desempenho
+
+Apresentar resultados de forma visual (gráficos, .csv, .md)
+
+📊 Métricas Geradas
+Métrica	Significado
+tempo_execucao	Tempo que o Velvet demorou a responder
+prompt_tokens	Nº de tokens do input
+resposta_tokens	Nº de tokens da resposta gerada
+palavras_chave_comuns	Nº de palavras partilhadas com o contexto
+validacao_keywords	Se a resposta passou o teste de validação (mínimo 3 palavras relevantes)
+
+📁 Ficheiros Criados
+Tipo	Caminho	Conteúdo
+.csv	resumo_metricas.csv	Tabela de todas as interações
+.png	grafico_tempo_velvet.png	Histograma dos tempos de resposta
+.png	grafico_valida_velvet.png	Evolução da taxa de respostas válidas
+.md	relatorio_velvet_local.md	Relatório em texto Markdown
+
+🧠 Integração no Fluxo Velvet
+Este módulo não interage diretamente com o modelo, mas é fundamental para análise pós-processamento, pois:
+
+Lê as métricas guardadas pelo logger.py
+
+Permite comparar variantes, detectar falhas e otimizar parâmetros
+
+É frequentemente chamado pela interface gráfica (interface.py), através de botões de análise
+
+✅ Funções-Chave
+Carregamento de velvet_respostas.json
+
+Extração de métricas úteis
+
+Geração de gráficos com matplotlib
+
+Escrita de relatórios em CSV e Markdown
+
+📌 Justificação Tecnológica
+Ferramenta	Justificação
+pandas	Manipulação rápida e fácil de grandes volumes de dados
+matplotlib	Geração de gráficos simples, personalizáveis e exportáveis
+Markdown (.md)	Relatórios legíveis por humanos, exportáveis para PDF ou HTML
+
+🚀 Benefícios para o Projeto
+Quantificação objetiva da performance do modelo
+
+Visualização fácil para apresentações e defesa
+
+Comparabilidade entre testes e versões futuras
+
+Facilita a validação pedagógica e técnica
+
+Este módulo reforça a vertente científica e analítica do vosso trabalho — ideal para defender com dados e evidências visuais.
+

@@ -1,0 +1,83 @@
+📁 velvet_runner.py – Módulo de Geração com Velvet-2B
+📌 Função no Projeto
+Este módulo executa o core da geração de linguagem natural através do modelo LLM Velvet-2B, responsável por produzir as respostas com base nos prompts gerados.
+
+🔄 Pipeline Implementado (Passo a Passo)
+1. Carregamento do Modelo Velvet
+Usa HuggingFace Transformers para carregar:
+
+python
+Copiar
+Editar
+tokenizer = AutoTokenizer.from_pretrained(VELVET_MODEL, token=HF_TOKEN)
+model = AutoModelForCausalLM.from_pretrained(VELVET_MODEL, token=HF_TOKEN)
+Gera um pipeline com parâmetros definidos em config.py:
+
+python
+Copiar
+Editar
+pipeline("text-generation", ...)
+2. Geração da Resposta
+Função principal:
+
+python
+Copiar
+Editar
+def generate_response(prompt: str) -> str:
+Traduz o prompt de português para inglês usando MarianMT (traduzir_pt_para_en)
+
+Passa o prompt traduzido ao modelo Velvet
+
+Gera o texto de saída em inglês
+
+Traduz de volta para português com traduzir_en_para_pt
+
+Remove prefixos irrelevantes como “Resposta:”
+
+3. Validação (Redundante aqui, duplicado do controller)
+A função validar_resposta_por_keywords existe aqui também, embora seja usada mais diretamente em chatbot_controller.py.
+
+4. Gravação da Resposta
+Regista a resposta no histórico JSON:
+
+python
+Copiar
+Editar
+salvar_completo_em_arquivo(detalhes)
+🧠 Integração com o Velvet-2B
+Este módulo isola o uso direto do modelo:
+
+Permite mudança fácil do modelo no futuro
+
+Reduz complexidade nos controladores
+
+Usa traduções automáticas para contornar a limitação linguística do Velvet-2B, preservando coerência e clareza da resposta em português.
+
+✅ Funções-Chave
+Função	Propósito
+generate_response(prompt: str)	Gera resposta completa via Velvet, com tradução bidirecional
+load_model()	Carrega o modelo e inicializa o pipeline HuggingFace
+salvar_completo_em_arquivo(detalhes: dict)	Guarda histórico completo de interações
+
+📌 Justificação Tecnológica
+Velvet-2B: escolha imposta no enunciado, com foco em execução local. Tem limitações em português, compensadas com:
+
+MarianMT: modelo open source, local, leve, eficaz em PT ⇄ EN
+
+Separação de responsabilidades: o controlador (chatbot_controller) gere o fluxo, e o velvet_runner gere a geração → modularidade, manutenção fácil.
+
+Histórico em JSON: garante rastreabilidade pedagógica e debugging.
+
+📊 Parâmetros Técnicos (config.py)
+python
+Copiar
+Editar
+VELVET_PARAMS = {
+    "max_new_tokens": 300,
+    "temperature": 0.3,
+    "top_p": 0.8,
+    "repetition_penalty": 1.2
+}
+Otimizados para respostas determinísticas, focadas e consistentes.
+
+Ideais para ambiente educativo onde clareza > criatividade.

@@ -1,0 +1,87 @@
+📁 config.py – Configuração Global do Sistema
+📌 Função no Projeto
+Este módulo define e centraliza:
+
+Caminhos para ficheiros e diretórios
+
+Modelos usados no pipeline (LLM, embeddings, tradução, reranker)
+
+Parâmetros técnicos (tokens, temperatura, top_k, etc.)
+
+Tokens de autenticação (ex: HuggingFace, Discord)
+
+🧩 Componentes Chave
+1. Paths e Diretórios
+
+DOCUMENTS_PATH = "data/documents"
+CHROMA_PATH = "embeddings_db/chroma_db"
+Define onde estão os documentos para RAG e onde guardar a base vetorial
+
+2. Modelos Utilizados
+
+EMBEDDING_MODEL = "intfloat/e5-large-v2"
+RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-6-v2"
+VELVET_MODEL = "Almawave/Velvet-2B"
+Modelos HuggingFace utilizados nos diferentes módulos:
+
+e5-large-v2 para embeddings
+
+CrossEncoder para reranking
+
+Velvet-2B para geração
+
+3. Parâmetros de Geração
+
+VELVET_PARAMS = {
+    "max_new_tokens": 300,
+    "temperature": 0.3,
+    "top_p": 0.8,
+    "repetition_penalty": 1.2
+}
+Controlam a saída do Velvet (respostas mais curtas, focadas e repetíveis)
+
+4. Modelos de Tradução MarianMT
+python
+Copiar
+Editar
+TRADUTOR_MODELOS = {
+    "pt-en": {"tokenizer": ..., "model": ...},
+    "en-pt": {"tokenizer": ..., "model": ...}
+}
+Modelos MarianMT carregados localmente para tradução bidirecional
+
+5. Variáveis de Ambiente
+python
+Copiar
+Editar
+HF_TOKEN = os.getenv("HF_TOKEN")
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+Permite armazenar os tokens de forma segura fora do código
+
+🧠 Integração no Fluxo Velvet
+Todos os módulos técnicos do projeto dependem de config.py:
+
+velvet_runner.py usa o VELVET_MODEL e os VELVET_PARAMS
+
+rag_engine.py e rag_library_manager.py usam EMBEDDING_MODEL e CHROMA_PATH
+
+tradutor_local.py importa os TRADUTOR_MODELOS
+
+Desta forma, qualquer alteração de modelo ou parâmetro exige modificação apenas neste ficheiro.
+
+📌 Justificação Tecnológica
+Escolha	Justificação
+Centralização da configuração	Evita repetição e facilita manutenção
+Modelos HuggingFace	Versáteis, treinados, eficientes e com suporte comunitário
+.env (variáveis de ambiente)	Segurança e boas práticas na gestão de tokens
+
+🚀 Benefícios para o Projeto
+Facilidade de alteração de modelos ou parâmetros
+
+Padronização de caminhos e definições
+
+Escalabilidade: permite mudar modelos sem mexer em 10 ficheiros
+
+Organização profissional e alinhada com projetos reais
+
+Este módulo é o ponto de personalização principal do projeto. Para futuras melhorias, basta atualizar o config.py para adaptar o sistema a novas tarefas, modelos ou documentos.

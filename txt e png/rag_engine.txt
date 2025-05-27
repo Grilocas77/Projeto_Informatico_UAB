@@ -1,0 +1,76 @@
+📁 rag_engine.py – Recuperação Semântica com RAG e Reranking
+📌 Função no Projeto
+Este módulo trata da procura e seleção inteligente de contexto relevante para alimentar o modelo Velvet. Ele executa a técnica RAG – Retrieval-Augmented Generation, permitindo que o modelo responda com base em conhecimento armazenado em documentos da UC.
+
+🔄 Pipeline de Recuperação (etapas chave)
+1. Inicialização dos Componentes
+Carrega:
+
+Embeddings com HuggingFaceEmbeddings (modelo e5-large-v2)
+
+Tokenizer para truncamento
+
+Reranker com CrossEncoder (ms-marco-MiniLM-L-6-v2)
+
+2. Busca na Base Vetorial (ChromaDB)
+Usa a função get_chroma_db() para carregar a base persistente criada previamente:
+
+
+db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
+3. Tradução da Pergunta (PT ➜ EN)
+A pergunta é traduzida para inglês para compatibilidade com os embeddings (todos em EN).
+
+4. Geração de Embedding da Pergunta
+Vetoriza a pergunta com o modelo e5-large-v2.
+
+5. Pesquisa por Similaridade
+Executa KNN:
+
+
+context_docs = db.similarity_search(query_en, k=K_SIMILARITY_SEARCH)
+6. Reranking com CrossEncoder
+Cada par (pergunta, documento) é pontuado com reranker.predict(pairs)
+
+Ordena os documentos por relevância semântica real (não só por vetor).
+
+7. Limpeza de Ruído
+Usa a função limpar_ruido_contexto() para eliminar títulos, figuras, tabelas e ruído linguístico.
+
+8. Truncamento por Tokens
+Usa truncate_by_tokens() para limitar o contexto a MAX_PROMPT_TOKENS, evitando falhas no modelo.
+
+🧠 Integração no Fluxo Velvet
+O rag_engine.py determina o que o Velvet vê. Se a seleção de contexto for pobre, o Velvet dará uma resposta vaga. Por isso:
+
+Embeddings (semantic vector search) fornecem candidatos iniciais
+
+Reranking (CrossEncoder) afina para relevância real
+
+Limpeza e truncamento asseguram que só vai conteúdo claro e relevante
+
+Este módulo alimenta o prompt_en gerado no chatbot_controller.py.
+
+✅ Funções-Chave
+Função	Propósito
+retrieve_context(...)	Função principal usada no controlador
+limpar_ruido_contexto(texto)	Remove ruído irrelevante dos documentos
+truncate_by_tokens(...)	Garante que o input ao modelo não ultrapassa o limite
+is_generic_context(...)	Heurística para evitar contextos muito vagos
+
+📌 Justificação Tecnológica
+Componente	Motivo da Escolha
+RAG	Permite respostas baseadas em documentos reais
+ChromaDB	Base vetorial leve, local e persistente
+e5-large-v2	Modelo de embeddings de última geração, com ótima performance semântica
+CrossEncoder	Avaliação cruzada de pergunta-documento: mais preciso que dot-product
+Limpeza/Truncamento	Foco na clareza → ideal para uso pedagógico
+
+✨ Vantagens para o Projeto
+Torna o chatbot “consciente” do conteúdo da UC
+
+Garante que Velvet recebe contexto informativo e relevante
+
+Arquitetura 100% local: sem dependência de APIs externas
+
+Flexível: base pode ser atualizada com novos conteúdos facilmente
+

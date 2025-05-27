@@ -1,0 +1,110 @@
+🧠 DEFINIÇÕES DAS TECNOLOGIAS USADAS NO PROJETO
+🧩 1. Pipeline
+Definição:
+Um pipeline é uma cadeia de passos sequenciais onde a saída de um passo é a entrada do próximo. No vosso projeto, o pipeline representa o fluxo completo desde a pergunta do utilizador até à resposta final gerada, incluindo tradução, recuperação de contexto, geração e validação.
+
+Pipeline do Projeto:
+
+Pergunta em português
+
+Tradução PT → EN (MarianMT)
+
+Recuperação de contexto com RAG
+
+Reranking com CrossEncoder
+
+Geração com Velvet-2B
+
+Tradução EN → PT
+
+Validação com palavras-chave
+
+Registo e métricas
+
+📚 2. RAG (Retrieval-Augmented Generation)
+Definição:
+É uma técnica que combina busca de documentos com geração de linguagem natural. Em vez de depender apenas da "memória" do modelo, o sistema consulta uma base de conhecimento externa (base vetorial) para responder de forma mais informada.
+
+Aplicação no Projeto:
+
+Usa ChromaDB como base vetorial
+
+Recupera documentos relevantes com embeddings (e5-large-v2)
+
+Fornece o contexto ao modelo Velvet
+
+🎯 3. Reranking (com CrossEncoder)
+Definição:
+Reranking é o processo de reordenar os documentos recuperados por um motor de busca, com base num critério mais refinado.
+Um CrossEncoder avalia o par (pergunta, documento) em conjunto, permitindo uma comparação mais precisa que o dot-product simples de embeddings.
+
+Aplicação no Projeto:
+
+Após a recuperação inicial com embeddings, os pares são reavaliados com ms-marco-MiniLM-L-6-v2
+
+Isto assegura que o contexto mais relevante chega ao Velvet
+
+🧠 4. Velvet-2B
+Definição:
+Um modelo de linguagem de código aberto (LLM), treinado para gerar texto natural. No vosso caso, é usado para gerar respostas a perguntas, com base num prompt estruturado.
+
+Especificidades:
+
+Executado localmente
+
+Melhor desempenho em inglês/italiano
+
+Usado com prompt contextual e controlado
+
+🔄 5. MarianMT (HuggingFace)
+Definição:
+Conjunto de modelos de tradução automática baseados em Transformer. Treinados com dados do projeto OPUS.
+
+Aplicação no Projeto:
+
+Tradução PT → EN da pergunta
+
+Tradução EN → PT da resposta
+
+Garante compatibilidade linguística com Velvet
+
+💬 6. Tokenização (AutoTokenizer)
+Definição:
+Processo de dividir o texto em unidades ("tokens") que o modelo consegue entender. Importante para:
+
+Controlar o tamanho dos inputs
+
+Cortar o contexto em limites seguros
+
+📁 7. ChromaDB (Vector Store)
+Definição:
+Base de dados vetorial local e leve, otimizada para consultas por similaridade semântica. Armazena representações vetoriais (embeddings) dos documentos da UC.
+
+🧪 8. Heurísticas Usadas
+Definição de Heurística:
+Regras práticas ou filtros baseados em conhecimento prévio para guiar decisões automáticas sem cálculos pesados.
+
+Heurísticas Aplicadas no Projeto:
+
+Área	Heurística Aplicada
+Seleção de chunks	Remover textos curtos, títulos soltos, listas, referências
+Validação de respostas	Resposta válida se partilhar ≥ 3 palavras-chave com o contexto
+Qualidade de contexto	Evitar chunks genéricos (ex: com termos como “veja”, “figura”, etc.)
+Truncamento	Cortar o texto por número máximo de tokens em vez de carateres
+
+📏 9. Validação por Palavras-Chave
+Definição:
+Verifica se a resposta gerada contém palavras com 4+ letras que também estão no contexto. Garante que a resposta é relevante e não genérica.
+
+📊 10. Métricas
+Definição:
+Indicadores quantitativos que avaliam o desempenho do sistema. Incluem:
+
+Tempo de resposta
+
+Tokens de entrada/saída
+
+Validação por palavras-chave
+
+Frequência de perguntas
+

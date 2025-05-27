@@ -1,0 +1,68 @@
+📁 chatbot_engine.py – Busca Semântica Heurística com Embeddings
+📌 Função no Projeto
+Este módulo implementa um mecanismo alternativo e simplificado de recuperação semântica, útil como:
+
+Comparação com o pipeline RAG+Velvet
+
+Ferramenta de fallback (respostas rápidas sem geração)
+
+Exploração local dos documentos indexados
+
+🧩 Pipeline Interno
+1. Carregamento de Embeddings
+python
+Copiar
+Editar
+model = SentenceTransformer(EMBEDDING_MODEL)
+Usa o mesmo modelo e5-large-v2 definido em config.py
+
+2. Acesso à ChromaDB
+python
+Copiar
+Editar
+collection = get_chroma_db()
+resultados = collection.similarity_search(query=pergunta, k=k)
+Faz busca por similaridade vetorial diretamente nos embeddings
+
+3. Filtragem e Normalização
+Garante que só retorna conteúdos válidos (page_content)
+
+Limita resposta ao MAX_DOC_CHARS
+
+4. Impressão ou Retorno
+Mostra a melhor resposta encontrada
+
+Pode ser usada como fallback quando o modelo Velvet não está disponível
+
+🧠 Integração no Projeto
+Este módulo não é usado pelo cli_interface.py nem pelo chatbot_controller.py.
+
+No entanto:
+
+Pode ser útil para testes de desempenho
+
+Útil em ambientes com recursos limitados (sem GPU ou sem MarianMT)
+
+Serve como comparador qualitativo entre métodos com e sem LLM
+
+✅ Função-Chave
+Função	Propósito
+busca_local_heuristica(...)	Busca semântica direta e imprime ou retorna a melhor resposta textual
+
+📌 Justificação Tecnológica
+Componente	Justificação
+SentenceTransformer	Modelo robusto para embeddings de sentenças
+ChromaDB	Base vetorial já existente, reaproveitada
+Heurística simples	Rápida e suficiente para testar a qualidade dos documentos indexados
+
+🚀 Benefícios para o Projeto
+Alternativa leve ao pipeline completo
+
+Validação da qualidade dos embeddings/documentos
+
+Permite testar apenas o RAG, isoladamente
+
+Pode ser evoluído para um sistema de QA rápido
+
+📦 Conclusão
+Apesar de não estar ligado ao fluxo CLI ou GUI, chatbot_engine.py representa uma ferramenta auxiliar útil para debugging, testes comparativos ou ambientes restritos.

@@ -1,0 +1,93 @@
+📁 test_request.py – Análise e Validação de Respostas do Velvet
+📌 Função no Projeto
+Este script percorre todo o histórico (velvet_respostas.json) e:
+
+Calcula métricas agregadas
+
+Filtra respostas inválidas
+
+Gera relatórios em .csv, .json, e gráficos em .png
+
+É essencial para validar o sistema antes da apresentação ou defesa, verificando:
+
+Se o Velvet está a responder bem
+
+Quais perguntas falham
+
+Que métricas são consistentes
+
+🔄 Pipeline de Validação
+1. Carregamento do JSON de Respostas
+
+with open(entrada_json, 'r', encoding='utf-8') as f:
+    respostas = json.load(f)
+2. Extração de Métricas
+Por cada entrada:
+
+Tempo de execução
+
+Nº de tokens
+
+Nº de documentos recuperados
+
+Validação por palavras-chave
+
+Pergunta original
+
+Contexto usado
+
+3. Filtragem de Respostas Inválidas
+Respostas com:
+
+Menos de 10 caracteres
+
+Falha na validação por palavras-chave
+
+Contexto vazio
+
+São guardadas em respostas_invalidas.json para análise posterior.
+
+4. Contagem de Perguntas Frequentes
+Conta perguntas repetidas para ver padrões de uso
+
+Gera ranking_perguntas.csv com as mais frequentes
+
+5. Criação de Gráficos
+Histograma de tempos de resposta
+
+Gráfico de barras das perguntas mais comuns
+
+🧠 Integração no Fluxo Velvet
+Este script atua após o uso do chatbot, fornecendo uma visão crítica sobre os resultados obtidos com o modelo Velvet-2B:
+
+Apoia decisões de melhoria (ex: reformular perguntas, alterar parâmetros)
+
+Permite validar a robustez do pipeline RAG + Velvet
+
+Complementa o metrics_controller.py com deteção de falhas reais
+
+✅ Saídas Geradas
+Ficheiro	Conteúdo
+resumo_metricas.csv	Métricas completas de todas as respostas
+respostas_invalidas.json	Lista de respostas mal geradas
+ranking_perguntas.csv	Perguntas mais frequentes
+grafico_tempo_velvet.png	Visual da distribuição de tempos
+grafico_valida_velvet.png	Evolução da taxa de respostas válidas
+
+📌 Justificação Tecnológica
+Ferramenta	Utilização
+pandas	Análise tabular eficiente
+Counter	Contagem rápida de perguntas
+matplotlib	Gráficos automatizados e prontos para anexar no relatório
+JSON	Estrutura clara e compatível para revisão posterior
+
+🚀 Benefícios para o Projeto
+Controlo de qualidade automatizado
+
+Permite filtrar falhas reais do sistema
+
+Identifica padrões de uso e frequência de perguntas
+
+Base para decisões técnicas e pedagógicas
+
+Este módulo é uma das ferramentas mais valiosas para defender a fiabilidade do vosso sistema, apresentando dados reais e casos críticos.

@@ -1,0 +1,68 @@
+📁 logger.py – Registo de Eventos, Métricas e Logs Técnicos
+📌 Função no Projeto
+Este módulo é responsável por guardar tudo o que acontece durante uma interação com o chatbot:
+
+Respostas geradas
+
+Métricas de desempenho e qualidade
+
+Eventos técnicos (erros, passos do pipeline, etc.)
+
+🧩 Onde é Utilizado?
+Diretamente em:
+
+chatbot_controller.py → para salvar métricas e eventos
+
+metrics_controller.py → leitura posterior das métricas
+
+Indiretamente em toda a infraestrutura de testes e relatórios
+
+🔄 Componentes-Chave
+1. Guardar Métricas
+
+def salvar_metricas(metricas, caminho="data/metrics/velvet_metrics.jsonl")
+Guarda cada conjunto de métricas (tokens, tempo, validação) como linha .jsonl
+
+Inclui timestamp automático
+
+Usado para análise estatística posterior e geração de relatórios
+
+2. Log de Eventos
+
+def log_evento(msg, caminho="logs/velvet_logs.txt")
+Regista qualquer evento técnico, com timestamp
+
+Útil para debugging e auditoria
+
+Exemplo: início de resposta, falha na tradução, ausência de contexto, etc.
+
+🧠 Integração no Fluxo Velvet
+O logger.py garante que todas as interações com o modelo Velvet-2B ficam documentadas, o que é fundamental por vários motivos:
+
+Rastreabilidade pedagógica: podemos rever o que foi perguntado, qual contexto foi usado, e que resposta foi dada
+
+Análise de qualidade: permite correlacionar tokens usados, tempo de resposta e validação
+
+Transparência: se algo corre mal (ex: má tradução, contexto irrelevante), o log ajuda a identificar o problema
+
+✅ Funções-Chave
+Função	Propósito
+salvar_metricas()	Guarda métricas detalhadas num ficheiro estruturado
+log_evento()	Escreve eventos técnicos com timestamp
+
+📌 Justificação Tecnológica
+Escolha	Justificação
+Formato .jsonl	Facilita leitura em lote, análise com pandas, e compatibilidade com outros sistemas
+Formato .txt	Legível diretamente por humanos para verificação rápida
+Diretórios separados	Mantém os dados organizados (logs/, data/metrics/)
+
+🚀 Benefícios para o Projeto
+Monitorização contínua da performance
+
+Suporte a testes e relatórios automáticos
+
+Facilidade de debugging
+
+Base sólida para análise pedagógica
+
+Este módulo é discreto mas essencial para avaliar o impacto do sistema e identificar falhas ou melhorias.

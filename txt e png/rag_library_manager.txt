@@ -1,0 +1,79 @@
+📁 rag_library_manager.py – Gestão da Base Vetorial (ChromaDB)
+📌 Função no Projeto
+Este módulo é o ponto de entrada para o sistema de Recuperação Aumentada por Geração (RAG), gerindo:
+
+A indexação de documentos
+
+A divisão inteligente do texto
+
+A eliminação de ruído
+
+A criação da base vetorial persistente
+
+🧩 Pipeline de Indexação
+1. Carregamento dos Documentos
+Lê todos os ficheiros da pasta data/documents/
+
+Suporta .txt, .pdf, .md, etc.
+
+Usa DirectoryLoader, TextLoader, PyPDFLoader
+
+2. Divisão Inteligente em Chunks
+Usa split_by_semantic_patterns():
+
+Deteta cabeçalhos, definições, secções e separadores
+
+Garante que cada chunk é coeso e tem sentido pedagógico
+
+3. Filtragem de Ruído
+Usa is_informative_chunk() para excluir:
+
+Títulos soltos
+
+Listas
+
+Números
+
+Referências e legendas
+
+4. Criação de Embeddings
+Usa HuggingFaceEmbeddings com o modelo e5-large-v2
+
+Aplica truncamento para respeitar o limite de MAX_PROMPT_TOKENS
+
+5. Indexação no ChromaDB
+Armazena cada chunk vetorizado na base persistente (embeddings_db/chroma_db)
+
+🧠 Integração no Fluxo Velvet
+Este módulo é executado antes do uso do chatbot, como uma fase de pré-processamento. Ele garante que o rag_engine.py poderá:
+
+Encontrar rapidamente os documentos mais relevantes
+
+Oferecer contexto de qualidade ao Velvet
+
+Sem este módulo, o sistema não teria base de conhecimento.
+
+✅ Funções-Chave
+Função	Propósito
+build(force_rebuild=True)	Cria ou recria toda a base vetorial
+_split_and_clean()	Divide e limpa o conteúdo dos documentos
+_deduplicate_chunks()	Evita repetição de texto vetorizado
+_index_chunks()	Indexa os chunks no ChromaDB
+
+📌 Justificação Tecnológica
+Componente	Justificação
+ChromaDB	Persistente, leve, local, ideal para protótipos
+e5-large-v2	Embeddings semânticos de alta qualidade
+LangChain Loaders	Abstraem os tipos de ficheiros e facilitam integração
+Filtros heurísticos	Garantem qualidade pedagógica dos chunks indexados
+
+🚀 Benefícios para o Projeto
+Base sólida para o RAG com documentos reais da UC
+
+Modularidade: pode ser atualizado facilmente com novos materiais
+
+Rastreabilidade: cada chunk pode ser identificado, modificado ou removido
+
+Eficiência: reduz ruído e otimiza a busca por contexto
+
+Este módulo representa a “memória” do chatbot — é aqui que os conteúdos da UC ganham estrutura semântica para alimentar o modelo Velvet.

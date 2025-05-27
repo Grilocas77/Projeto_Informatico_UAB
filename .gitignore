@@ -1,0 +1,47 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+env/
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs & artefatos
+*.log
+logs/
+*.csv
+*.json
+*.db
+
+# Word & Office
+*.docx
+*.xlsx
+*.pptx
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Builds
+dist/
+build/
+*.exe
+*.spec
+
+# Outros
+*.zip
+velvet-api/
+
+# Ficheiros com tokens/API Keys sensíveis
+.env
+Relatorio_intermedio/.env
+Relatorio_intermedio/token_velvet+Discord+DeepSeek

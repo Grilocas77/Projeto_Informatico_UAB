@@ -1,0 +1,83 @@
+📁 cli_interface.py – Interface Assíncrona via Terminal
+📌 Função no Projeto
+Este módulo oferece uma forma prática e leve de usar o chatbot Velvet-2B, sem depender de interface gráfica. É ideal para:
+
+Testes rápidos
+
+Utilizadores técnicos
+
+Ambientes com poucos recursos
+
+🧠 Características Técnicas
+1. Execução Assíncrona com asyncio
+
+Editar
+async def chat():
+Permite que o input e output sejam processados sem bloqueios
+
+Garante uma experiência fluida, mesmo que o modelo leve alguns segundos a responder
+
+Vantagens:
+
+Mais responsivo
+
+Preparado para integração com pipelines futuros ou múltiplos utilizadores
+
+Permite interações concorrentes
+
+2. Suporte a Comandos Especiais
+Comando	Função
+!ajuda	Mostra ajuda e instruções
+!historico	Mostra perguntas e respostas da sessão
+sair	Encerra o chatbot
+
+3. Modo Debug e Modo Simple
+Argumentos da CLI:
+
+--debug: Mostra o contexto, tradução, prompt e resposta bruta
+
+--simple: Mostra apenas a resposta final
+
+🔄 Integração no Fluxo Velvet
+python
+Copiar
+Editar
+from controllers.chatbot_controller import process_user_input
+Usa o pipeline completo do chatbot_controller.py:
+
+Tradução PT → EN
+
+Recuperação RAG
+
+Reranking CrossEncoder
+
+Geração Velvet-2B
+
+Tradução EN → PT
+
+Validação
+
+Logging e métricas
+
+O utilizador só vê a resposta final (ou o debug completo), sem precisar de saber o que se passa “por trás”.
+
+✅ Funções-Chave
+Função	Propósito
+async def chat()	Loop principal de interação
+process_user_input()	Executa todo o pipeline de geração
+parser.add_argument()	Configuração de modos de execução
+
+📌 Justificação Tecnológica
+Escolha	Motivo
+Colorama	Interface mais legível e colorida no terminal
+Asyncio	Respostas não bloqueantes, ideal para I/O pesado
+ArgumentParser	Flexibilidade e controlo via terminal
+
+🚀 Benefícios para o Projeto
+Portabilidade: pode correr em qualquer ambiente com Python
+
+Simplicidade: leve, rápido e direto
+
+Modularidade: facilmente integrável com outros módulos ou sistemas
+
+Modo debug: ótimo para demonstrações técnicas e defesa do projeto

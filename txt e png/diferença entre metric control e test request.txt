@@ -1,0 +1,68 @@
+
+🔍 Comparação Geral
+Módulo	                         Função Principal	                   Geração de Relatórios	      Interage com Velvet	Foco
+metrics_controller.py	    Analisa métricas gravadas	                    Sim (.csv, .md, .png)	         ❌ Não	Avaliação     estatística
+test_request.py	           Filtra respostas inválidas, analisa frequência	Sim (.csv, .json, .png)	         ❌ Não	              Validação de respostas
+test_lote.py	          Executa perguntas ao vivo	                   ❌ Só mostra no terminal	         ✅ Sim	              Teste funcional direto
+
+
+
+🧠 Explicação Detalhada
+1. metrics_controller.py
+Entrada: velvet_respostas.json com métricas completas
+
+Processa: tempo, tokens, validação por palavras-chave
+
+Gera:
+
+Relatório .md com resumo textual
+
+Gráfico de tempos (.png)
+
+Gráfico da taxa de validação ao longo do tempo (.png)
+
+Objetivo: análise estatística profunda da performance global
+
+✅ Ideal para: slides de apresentação, comparação de versões
+
+2. test_request.py
+Entrada: velvet_respostas.json
+
+Processa:
+
+Respostas inválidas (ex: vazias, mal validadas)
+
+Frequência de perguntas
+
+Gera:
+
+resumo_metricas.csv
+
+respostas_invalidas.json
+
+ranking_perguntas.csv
+
+Gráficos de frequência
+
+Objetivo: filtrar problemas reais e identificar padrões de uso
+
+✅ Ideal para: debugging, validação de robustez
+
+3. test_lote.py
+Entrada: lista de perguntas no próprio código
+
+Executa: pipeline real com Velvet + tradução + RAG
+
+Mede: tempo de resposta, tokens, validação (em tempo real)
+
+Não guarda ficheiros
+
+Objetivo: testar ao vivo o sistema com várias perguntas
+
+✅ Ideal para: demonstrações, testes funcionais rápidos
+
+📦 Resumo Final
+Se queres…	Usa este módulo
+Ver estatísticas completas com gráficos ➜	metrics_controller.py
+Validar respostas inválidas e repetição de perguntas ➜	test_request.py
+Fazer um teste funcional direto com perguntas reais ➜	test_lote.py

@@ -1,0 +1,65 @@
+📁 interface.py – Interface Gráfica com Tkinter
+📌 Função no Projeto
+Este módulo fornece uma interface gráfica local, acessível para utilizadores menos técnicos (estudantes, docentes). É uma alternativa visual à CLI, com botões, menus e acesso facilitado a funções.
+
+🧩 Componentes e Funcionalidades
+1. Iniciar Interfaces
+Permite lançar:
+
+A interface de linha de comandos (cli_interface.py)
+
+O bot do Discord (caso exista)
+
+Scripts de teste e métricas
+
+2. Gestão da Biblioteca RAG
+Acede ao RAGLibraryManager para atualizar a base vetorial (rag_library_manager.py)
+
+Mostra o progresso da reconstrução (opcional)
+
+3. Acesso a Ficheiros
+Abre com um clique:
+
+Histórico de respostas (velvet_respostas.json)
+
+Relatórios CSV e logs
+
+Painel de configurações (paths, preferências)
+
+4. Interface Multilingue e Ajuda
+Mensagens e labels organizados via dicionário STRINGS
+
+Botão de ajuda abre uma janela com explicações e links úteis
+
+🧠 Integração no Fluxo Velvet
+Embora interface.py não chame diretamente o modelo Velvet, ele executa scripts que sim:
+
+chatbot_controller.py via CLI
+
+test_request.py, metrics_controller.py para análises
+
+Atua como painel de controlo central do sistema, sendo particularmente útil em demonstrações e defesa do projeto.
+
+✅ Funções-Chave
+Função	Propósito
+executar_script()	Lança scripts externos (CLI, métricas, testes)
+RAGLibraryManager()	Permite rebuild/atualização da base vetorial
+mostrar_erro() / mostrar_info()	Diálogos amigáveis ao utilizador
+abrir_ajuda()	Documentação do projeto e créditos autorais
+
+📌 Justificação Tecnológica
+Componente	Justificação
+Tkinter	Simples, nativo em Python, ideal para protótipos
+PIL (ImageTk)	Suporte visual (logotipo, imagens)
+Subprocess	Integração com scripts externos de forma controlada
+JSON Config	Personalização do ambiente sem alterar código
+
+🚀 Benefícios para o Projeto
+Acessibilidade: qualquer pessoa pode usar o chatbot sem conhecer Python
+
+Centralização: tudo num só local: métricas, testes, respostas
+
+Facilidade de defesa: demonstração clara e profissional
+
+Modularidade: alterações nos scripts não afetam a GUI
+

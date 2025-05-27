@@ -1,0 +1,68 @@
+📁 test_lote.py – Testes Automatizados com Múltiplas Perguntas
+📌 Função no Projeto
+Este script executa um conjunto de perguntas predefinidas de forma sequencial, usando o pipeline completo do chatbot, e mostra os resultados diretamente no terminal:
+
+Resposta gerada
+
+Tempo de execução
+
+Validação por palavras-chave
+
+Contagem de tokens
+
+⚙ Como Funciona
+1. Lista de Perguntas
+
+perguntas = [
+    "o que é um diagrama de classes?",
+    "O que é UML?",
+    "o que é um diagrama de casos de utilização?",
+    ...
+]
+2. Loop de Teste
+Para cada pergunta:
+
+Envia para o process_user_input (pipeline completo com tradução, RAG, Velvet, validação)
+
+Mede o tempo de execução
+
+Mostra o resultado e indica se foi validado
+
+3. Resumo Final
+Ao final:
+
+
+print(f"\n=== Teste concluído. Tempo total: {tempo_total:.2f} segundos ===")
+🧠 Integração no Fluxo Velvet
+Este script simula interações reais, como se um utilizador estivesse a conversar com o chatbot. Ele é importante porque:
+
+Permite testar rapidamente várias situações
+
+Avalia se o sistema aguenta execução contínua
+
+Identifica falhas sem precisar de interface gráfica
+
+É usado principalmente durante a fase de testes ou antes de entregas.
+
+✅ Funções-Chave
+Função	Propósito
+process_user_input()	Executa o pipeline completo da pergunta
+time.time()	Mede o desempenho em tempo real
+print()	Feedback direto ao programador/testador
+
+📌 Justificação Tecnológica
+Escolha	Razão
+Pipeline real (chatbot_controller)	Garante que o teste reflete o funcionamento do sistema
+Execução em lote	Eficiência e automatização
+Sem dependência da GUI	Pode ser corrido em qualquer terminal Python
+
+🚀 Benefícios para o Projeto
+Validação rápida do comportamento do sistema com várias perguntas
+
+Útil para demonstrações ao vivo
+
+Permite medir a robustez e consistência do sistema
+
+Pode ser adaptado para testes de stress com mais perguntas
+
+Este script é ideal para mostrar aos avaliadores que o sistema funciona com consistência, mesmo quando testado em sequência.
